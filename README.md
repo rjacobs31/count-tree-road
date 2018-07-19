@@ -17,4 +17,4 @@ A counter for days gone by.
 
 # Running
 
-Run `yarn client` to run the web-app at [localhost:300](http://localhost:3000).
+Run `yarn client` to run the web-app at [localhost:3000](http://localhost:3000).
