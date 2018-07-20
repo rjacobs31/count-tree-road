@@ -1,8 +1,8 @@
-# Description
+# Count Tree Road
+
+## Description
 
 A counter for days gone by.
-
-# Installing
 
 ## Requirements
 
