@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Html exposing (Html, div, h1, program, text)
 import Html.Attributes exposing (class)
+import Widgets  exposing (daysSinceCounter)
 
 
 -- MODEL
@@ -32,6 +33,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ h1 [ class "main-title" ] [ text "Count Tree Road" ]
+        , daysSinceCounter []
         ]
 
 
