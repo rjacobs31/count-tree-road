@@ -2,6 +2,24 @@ body {
   background-color: #333333;
 }
 
+.content {
+  margin: 0 auto;
+  max-width: 960px;
+}
+
 .main-title {
   color: #cccccc;
+}
+
+.card {
+  border-radius: 1px;
+  background-color: #cccccc;
+  color: #333333;
+  height: 240px;
+  width: 360px;
+}
+
+.card__header {
+  font-size: 24px;
+  text-align: center;
 }
