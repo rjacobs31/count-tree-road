@@ -1,7 +1,10 @@
 module Main exposing (..)
 
+import Date exposing (Date)
 import Html exposing (Html, div, h1, program, text)
 import Html.Attributes exposing (class)
+import Result exposing (withDefault)
+import Time exposing (Time, every, second)
 import Widgets  exposing (daysSinceCounter)
 
 
@@ -9,12 +12,12 @@ import Widgets  exposing (daysSinceCounter)
 
 
 type alias Model =
-    {}
+    { currentDate : Date }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model, Cmd.none )
+    ( Model (Date.fromTime 0), Cmd.none )
 
 
 
@@ -23,6 +26,7 @@ init =
 
 type Msg
     = NoOp
+    | Tick Time
 
 
 
@@ -31,11 +35,16 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    div []
+    div [ class "content" ]
         [ h1 [ class "main-title" ] [ text "Count Tree Road" ]
-        , daysSinceCounter []
+        , daysSinceCounter deskPopDate model.currentDate
         ]
 
+
+deskPopDate : Date
+deskPopDate =
+    Date.fromString "2018-07-09"
+    |> withDefault (Date.fromTime 0)
 
 
 -- UPDATE
@@ -46,6 +55,8 @@ update msg model =
     case msg of
         NoOp ->
             ( model, Cmd.none )
+        Tick time ->
+            ({ model | currentDate = Date.fromTime time }, Cmd.none)
 
 
 
@@ -54,7 +65,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    every second Tick
 
 
 
