@@ -5,19 +5,19 @@ import Html exposing (Html, div, h1, program, text)
 import Html.Attributes exposing (class)
 import Result exposing (withDefault)
 import Time exposing (Time, every, second)
-import Widgets  exposing (daysSinceCounter)
+import Widgets exposing (daysSinceCounter)
 
 
 -- MODEL
 
 
 type alias Model =
-    { currentDate : Date }
+    { currentTime : Maybe Time }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model (Date.fromTime 0), Cmd.none )
+    ( Model Nothing, Cmd.none )
 
 
 
@@ -37,14 +37,19 @@ view : Model -> Html Msg
 view model =
     div [ class "content" ]
         [ h1 [ class "main-title" ] [ text "Count Tree Road" ]
-        , daysSinceCounter deskPopDate model.currentDate
+        , daysSinceCounter deskPopDate model.currentTime
         ]
 
 
-deskPopDate : Date
+deskPopDate : Maybe Time
 deskPopDate =
-    Date.fromString "2018-07-09"
-    |> withDefault (Date.fromTime 0)
+    case Date.fromString "2018-07-09" of
+        Ok date ->
+            Just (Date.toTime date)
+
+        _ ->
+            Nothing
+
 
 
 -- UPDATE
@@ -55,8 +60,9 @@ update msg model =
     case msg of
         NoOp ->
             ( model, Cmd.none )
+
         Tick time ->
-            ({ model | currentDate = Date.fromTime time }, Cmd.none)
+            ( { model | currentTime = Just time }, Cmd.none )
 
 
 
