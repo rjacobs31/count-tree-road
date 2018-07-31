@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Cursed Timer';
+  src: url(CursedTimerULiL.ttf);
+}
+
 body {
   background-color: #333333;
 }
@@ -22,4 +27,14 @@ body {
 .card__header {
   font-size: 24px;
   text-align: center;
+}
+
+.lcd-display {
+  background-color: #111111;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #a00000;
+  font-family: 'Cursed Timer', 'Lucida Console';
+  font-size: 48px;
+  padding: 8px;
 }
