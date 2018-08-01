@@ -12,6 +12,25 @@ body {
   max-width: 960px;
 }
 
+.top-nav {
+  background-color: #888888;
+  box-sizing: border-box;
+  padding: 4px 0;
+  width: 100%;
+}
+
+.top-nav__nav-link {
+  background-color: #d0d0d0;
+  box-sizing: border-box;
+  border: solid 4px #333333;
+  color: #000000;
+  display: inline-block;
+  font-size: 24px;
+  margin-left: 4px;
+  padding: 8px;
+  text-decoration: none;
+}
+
 .main-title {
   color: #cccccc;
 }
