@@ -3,6 +3,7 @@ module Page.Home exposing (Model, Msg, init, subscriptions, update, view)
 import Date exposing (Date, toTime)
 import Html exposing (Attribute, Html, div, span, text)
 import Html.Attributes exposing (class)
+import Task exposing (Task)
 import Time exposing (Time, every, inHours, second)
 
 
@@ -16,9 +17,11 @@ type Msg
     = UpdateTime Time
 
 
-init : Time -> Model
-init currentTime =
-    Model currentTime eventDate
+init : Task String Model
+init =
+    Time.now
+        |> Task.map
+            (\currentTime -> Model currentTime eventDate)
 
 
 eventDate : Time

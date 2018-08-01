@@ -5,6 +5,8 @@ import Html.Attributes exposing (class)
 import Page
 import Page.About as About
 import Page.Home as Home
+import Route exposing (Route)
+import Task
 
 
 -- MODEL
@@ -27,7 +29,8 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model (Loaded Blank), Cmd.none )
+    setRoute (Just Route.Root)
+        { pageState = Loaded Blank }
 
 
 
@@ -36,6 +39,8 @@ init =
 
 type Msg
     = NoOp
+    | ChangeLocation Page
+    | HomeLoaded (Result String Home.Model)
     | HomeMsg Home.Msg
 
 
@@ -81,18 +86,41 @@ viewPage model isLoading page =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        NoOp ->
-            ( model, Cmd.none )
+    updatePage (getPage model.pageState) msg model
 
-        HomeMsg subMsg ->
-            ( model, Cmd.none )
+
+setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
+setRoute maybeRoute model =
+    let
+        transition toMsg task =
+            ( { model | pageState = TransitioningFrom (getPage model.pageState) }
+            , Task.attempt toMsg task
+            )
+    in
+        case maybeRoute of
+            Just Route.Root ->
+                setRoute (Just Route.Home) model
+
+            Just Route.Home ->
+                transition HomeLoaded Home.init
+
+            Just Route.About ->
+                ( { model | pageState = Loaded About }, Cmd.none )
+
+            _ ->
+                ( model, Cmd.none )
 
 
 updatePage : Page -> Msg -> Model -> ( Model, Cmd Msg )
 updatePage page msg model =
-    case ( page, msg ) of
-        ( Home innerModel, HomeMsg innerMsg ) ->
+    case ( msg, page ) of
+        ( HomeLoaded (Ok subModel), _ ) ->
+            ( { model | pageState = Loaded (Home subModel) }, Cmd.none )
+
+        ( HomeLoaded (Err _), _ ) ->
+            ( model, Cmd.none )
+
+        ( HomeMsg innerMsg, Home innerModel ) ->
             let
                 ( newModel, _ ) =
                     Home.update innerMsg innerModel
