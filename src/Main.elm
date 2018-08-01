@@ -1,23 +1,33 @@
 module Main exposing (..)
 
-import Date exposing (Date)
-import Html exposing (Html, div, h1, program, text)
+import Html exposing (Html, div, h1, nav, program, text)
 import Html.Attributes exposing (class)
-import Result exposing (withDefault)
-import Time exposing (Time, every, second)
-import Widgets exposing (daysSinceCounter)
+import Page
+import Page.About as About
+import Page.Home as Home
 
 
 -- MODEL
 
 
+type Page
+    = Blank
+    | About
+    | Home Home.Model
+
+
+type PageState
+    = Loaded Page
+    | TransitioningFrom Page
+
+
 type alias Model =
-    { currentTime : Maybe Time }
+    { pageState : PageState }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model Nothing, Cmd.none )
+    ( Model (Loaded Blank), Cmd.none )
 
 
 
@@ -26,7 +36,7 @@ init =
 
 type Msg
     = NoOp
-    | Tick Time
+    | HomeMsg Home.Msg
 
 
 
@@ -35,20 +45,34 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    div [ class "content" ]
-        [ h1 [ class "main-title" ] [ text "Count Tree Road" ]
-        , daysSinceCounter deskPopDate model.currentTime
-        ]
+    case model.pageState of
+        Loaded page ->
+            viewPage model False page
+
+        TransitioningFrom page ->
+            div [ class "content" ]
+                [ h1 [ class "main-title" ] [ text "Loading..." ] ]
 
 
-deskPopDate : Maybe Time
-deskPopDate =
-    case Date.fromString "2018-07-09" of
-        Ok date ->
-            Just (Date.toTime date)
+viewPage : Model -> Bool -> Page -> Html Msg
+viewPage model isLoading page =
+    let
+        frame =
+            Page.frame isLoading
+    in
+        case page of
+            Home submodel ->
+                Home.view submodel
+                    |> frame Page.Home
+                    |> Html.map HomeMsg
 
-        _ ->
-            Nothing
+            About ->
+                About.view
+                    |> frame Page.About
+
+            _ ->
+                text ""
+                    |> frame Page.Other
 
 
 
@@ -61,8 +85,22 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        Tick time ->
-            ( { model | currentTime = Just time }, Cmd.none )
+        HomeMsg subMsg ->
+            ( model, Cmd.none )
+
+
+updatePage : Page -> Msg -> Model -> ( Model, Cmd Msg )
+updatePage page msg model =
+    case ( page, msg ) of
+        ( Home innerModel, HomeMsg innerMsg ) ->
+            let
+                ( newModel, _ ) =
+                    Home.update innerMsg innerModel
+            in
+                ( { model | pageState = Loaded (Home newModel) }, Cmd.none )
+
+        _ ->
+            ( model, Cmd.none )
 
 
 
@@ -71,7 +109,28 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    every second Tick
+    pageSubscriptions <| getPage model.pageState
+
+
+getPage : PageState -> Page
+getPage pageState =
+    case pageState of
+        Loaded page ->
+            page
+
+        TransitioningFrom page ->
+            page
+
+
+pageSubscriptions : Page -> Sub Msg
+pageSubscriptions page =
+    case page of
+        Home model ->
+            Home.subscriptions model
+                |> Sub.map (\subMsg -> HomeMsg subMsg)
+
+        _ ->
+            Sub.none
 
 
 
