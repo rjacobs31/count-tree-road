@@ -1,15 +1,25 @@
 module Page.Home exposing (Model, Msg, init, subscriptions, update, view)
 
+import Char
 import Date exposing (Date, toTime)
-import Html exposing (Attribute, Html, div, span, text)
+import Html exposing (Attribute, Html, div, span, table, td, tr, text)
 import Html.Attributes exposing (class)
+import String exposing (padLeft)
 import Task exposing (Task)
-import Time exposing (Time, every, inHours, second)
+import Time exposing (Time, every, inHours, inMinutes, inSeconds, second)
 
 
 type alias Model =
     { currentTime : Time
     , eventTime : Time
+    }
+
+
+type alias TimeSince =
+    { days : Int
+    , hours : Int
+    , minutes : Int
+    , seconds : Int
     }
 
 
@@ -26,7 +36,7 @@ init =
 
 eventDate : Time
 eventDate =
-    case Date.fromString "2018-07-09" of
+    case Date.fromString "2018-07-09T11:00" of
         Ok date ->
             toTime date
 
@@ -45,22 +55,65 @@ view model =
 
 daysSinceCounter : Time -> Time -> Html msg
 daysSinceCounter eventDate currentDate =
-    div [ class "card card--days-since" ]
-        [ div [ class "card__header" ]
-            [ span [ class "lcd-display" ] [ text <| daysSince eventDate currentDate ]
-            , text " days"
+    let
+        elapsed =
+            timeSince eventDate currentDate
+    in
+        div [ class "card card--days-since" ]
+            [ div [ class "card__header" ]
+                [ text "Time since last desk pop" ]
+            , div [ class "card__body" ]
+                [ table [ class "card__counter-list" ]
+                    [ tr []
+                        [ td [ class "lcd-display" ] [ text <| intPadLeft5 elapsed.days ]
+                        , td [] [ text "days" ]
+                        ]
+                    , tr []
+                        [ td [ class "lcd-display" ] [ text <| intPadLeft5 elapsed.hours ]
+                        , td [] [ text "hours" ]
+                        ]
+                    , tr []
+                        [ td [ class "lcd-display" ] [ text <| intPadLeft5 elapsed.minutes ]
+                        , td [] [ text "minutes" ]
+                        ]
+                    , tr []
+                        [ td [ class "lcd-display" ] [ text <| intPadLeft5 elapsed.seconds ]
+                        , td [] [ text "seconds" ]
+                        ]
+                    ]
+                ]
             ]
-        ]
 
 
-daysSince : Time -> Time -> String
-daysSince eventTime currentTime =
-    currentTime
-        - eventTime
-        |> inHours
-        |> flip (/) 24
-        |> floor
-        |> toString
+intPadLeft5 : Int -> String
+intPadLeft5 num =
+    toString num
+        |> padLeft 5 (Char.fromCode 160)
+
+
+timeSince : Time -> Time -> TimeSince
+timeSince eventTime currentTime =
+    let
+        timeDelta =
+            currentTime - eventTime
+
+        daysSince =
+            timeDelta |> inHours |> flip (/) 24 |> floor
+
+        hoursSince =
+            timeDelta |> inHours |> floor
+
+        minutesSince =
+            timeDelta |> inMinutes |> floor
+
+        secondsSince =
+            timeDelta |> inSeconds |> floor
+    in
+        { days = daysSince
+        , hours = hoursSince - 24 * daysSince
+        , minutes = minutesSince - 60 * hoursSince
+        , seconds = secondsSince - 60 * minutesSince
+        }
 
 
 

@@ -39,8 +39,7 @@ body {
   border-radius: 1px;
   background-color: #cccccc;
   color: #333333;
-  height: 240px;
-  width: 360px;
+  font-size: 24px;
 }
 
 .card__header {
@@ -56,4 +55,9 @@ body {
   font-family: 'Cursed Timer', 'Lucida Console';
   font-size: 48px;
   padding: 8px;
+  text-align: right;
+}
+
+.card__counter-list {
+  margin: auto;
 }

@@ -1,7 +1,6 @@
 module Main exposing (..)
 
-import Html exposing (Html, div, h1, nav, program, text)
-import Html.Attributes exposing (class)
+import Html exposing (Html, program, text)
 import Page
 import Page.About as About
 import Page.Home as Home
@@ -55,8 +54,7 @@ view model =
             viewPage model False page
 
         TransitioningFrom page ->
-            div [ class "content" ]
-                [ h1 [ class "main-title" ] [ text "Loading..." ] ]
+            viewPage model True page
 
 
 viewPage : Model -> Bool -> Page -> Html Msg
