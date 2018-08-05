@@ -108,6 +108,25 @@ body {
   padding: 16px;
 }
 
+.page {
+  border-radius: 1px;
+  background-color: #ffffff;
+  color: #111111;
+  font-family: 'Quicksand Medium', Sans;
+  padding: 32px;
+}
+
+.page__heading {
+  font-family: 'Quicksand Bold', Sans;
+  font-size: 48px;
+  margin: 0 0 0.618em 0;
+}
+
+.page__body {
+  font-family: 'Quicksand Medium';
+  font-size: 20px;
+}
+
 
 /* Footer */
 
