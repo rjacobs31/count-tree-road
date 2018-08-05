@@ -1,81 +1,17 @@
 module Main exposing (..)
 
 import Html exposing (Html, program, text)
-import Page
-import Page.About as About
 import Page.Home as Home
 import Route exposing (Route)
 import Task
-
-
--- MODEL
-
-
-type Page
-    = Blank
-    | About
-    | Home Home.Model
-
-
-type PageState
-    = Loaded Page
-    | TransitioningFrom Page
-
-
-type alias Model =
-    { pageState : PageState }
+import Types exposing (..)
+import View exposing (view)
 
 
 init : ( Model, Cmd Msg )
 init =
     setRoute (Just Route.Root)
         { pageState = Loaded Blank }
-
-
-
--- MESSAGES
-
-
-type Msg
-    = NoOp
-    | ChangeLocation Page
-    | HomeLoaded (Result String Home.Model)
-    | HomeMsg Home.Msg
-
-
-
--- VIEW
-
-
-view : Model -> Html Msg
-view model =
-    case model.pageState of
-        Loaded page ->
-            viewPage model False page
-
-        TransitioningFrom page ->
-            viewPage model True page
-
-
-viewPage : Model -> Bool -> Page -> Html Msg
-viewPage model isLoading page =
-    let
-        frame =
-            Page.frame isLoading
-    in
-        case page of
-            Home submodel ->
-                Home.view submodel
-                    |> frame Page.Home
-                    |> Html.map HomeMsg
-
-            About ->
-                About.view
-                    |> frame Page.About
-
-            _ ->
-                text ""
-                    |> frame Page.Other
 
 
 
@@ -112,6 +48,9 @@ setRoute maybeRoute model =
 updatePage : Page -> Msg -> Model -> ( Model, Cmd Msg )
 updatePage page msg model =
     case ( msg, page ) of
+        ( GoTo newRoute, _ ) ->
+            setRoute (Just newRoute) model
+
         ( HomeLoaded (Ok subModel), _ ) ->
             ( { model | pageState = Loaded (Home subModel) }, Cmd.none )
 

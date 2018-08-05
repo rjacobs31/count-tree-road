@@ -31,6 +31,12 @@ body {
   text-decoration: none;
 }
 
+.top-nav__nav-link--active {
+  background-color: #f0d0d0;
+  border-color: #444433;
+  color: #880000;
+}
+
 .main-title {
   color: #cccccc;
 }
