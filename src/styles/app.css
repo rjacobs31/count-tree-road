@@ -115,6 +115,25 @@ body {
   background-color: #888888;
   box-sizing: border-box;
   color: #d0d0d0;
-  padding: 4px;
+  padding: 16px;
   width: 100%;
+}
+
+.footer__link {
+  color: #e0e0e0;
+  font-family: 'Quicksand Medium', Sans;
+  font-size: 12px;
+}
+
+.footer__link:hover {
+  color: #ffffff;
+}
+
+.octicon {
+  box-sizing: border-box;
+  fill: #ffffff;
+  height: 24px;
+  width: 24px;
+  vertical-align: middle;
+  padding: 4px;
 }
