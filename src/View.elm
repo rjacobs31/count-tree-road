@@ -52,8 +52,8 @@ viewHeader activePage =
     div [ class "header" ]
         [ h1 [ class "main-title" ] [ text "Count Tree Road" ]
         , nav [ class "top-nav" ]
-            [ navLink Route.Home (Just HomePage) activePage "Home"
-            , navLink Route.About (Just AboutPage) activePage "About"
+            [ navLink Route.Home (Just HomePage) activePage "HOME"
+            , navLink Route.About (Just AboutPage) activePage "ABOUT"
             ]
         ]
 
@@ -97,5 +97,5 @@ viewContent page =
 viewFooter : Html Msg
 viewFooter =
     div [ class "footer" ]
-        [ text "Find on GitHub"
+        [ a [ href "" ] [ text "Find on GitHub" ]
         ]

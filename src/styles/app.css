@@ -3,6 +3,16 @@
   src: url(CursedTimerULiL.ttf);
 }
 
+@font-face {
+  font-family: 'Quicksand Bold';
+  src: url(Quicksand-Bold.ttf);
+}
+
+@font-face {
+  font-family: 'Quicksand Medium';
+  src: url(Quicksand-Medium.ttf);
+}
+
 body {
   background-color: #333333;
 }
@@ -12,6 +22,9 @@ body {
   max-width: 960px;
 }
 
+
+/* Header */
+
 .top-nav {
   background-color: #888888;
   box-sizing: border-box;
@@ -20,22 +33,38 @@ body {
 }
 
 .top-nav__nav-link {
-  background-color: #d0d0d0;
+  background-color: #111111;
   box-sizing: border-box;
   border: solid 4px #333333;
-  color: #000000;
+  border-radius: 2px;
+  color: #888888;
   display: inline-block;
+  font-family: 'Quicksand Medium', Sans;
   font-size: 24px;
   margin-left: 4px;
   padding: 8px;
   text-decoration: none;
 }
 
-.top-nav__nav-link--active {
-  background-color: #f0d0d0;
-  border-color: #444433;
-  color: #880000;
+.top-nav__nav-link:hover {
+  background-color: #191919;
+  color: #aa8888;
 }
+
+.top-nav__nav-link--active {
+  background-color: #191919;
+  color: #d00000;
+  text-shadow: #a00000 0 0 2px;
+}
+
+.top-nav__nav-link--active:hover {
+  background-color: #222222;
+  color: #f00000;
+  text-shadow: #c00000 0 0 2px;
+}
+
+
+/* Content */
 
 .main-title {
   color: #cccccc;
@@ -43,27 +72,49 @@ body {
 
 .card {
   border-radius: 1px;
-  background-color: #cccccc;
-  color: #333333;
-  font-size: 24px;
+  background-color: #ffffff;
+  color: #111111;
+  font-family: 'Quicksand Medium', Sans;
+  padding: 16px;
 }
 
 .card__header {
-  font-size: 24px;
+  font-family: 'Quicksand Bold', Sans;
+  font-size: 48px;
   text-align: center;
+  padding-bottom: 16px;
 }
 
 .lcd-display {
   background-color: #111111;
   border-radius: 4px;
   box-sizing: border-box;
-  color: #a00000;
+  color: #c00000;
   font-family: 'Cursed Timer', 'Lucida Console';
   font-size: 48px;
   padding: 8px;
   text-align: right;
+  text-shadow: #a00000 0 0 2px;
 }
 
 .card__counter-list {
   margin: auto;
+}
+
+.card__label {
+  color: #111111;
+  font-family: 'Quicksand Medium', Sans;
+  font-size: 36px;
+  padding: 16px;
+}
+
+
+/* Footer */
+
+.footer {
+  background-color: #888888;
+  box-sizing: border-box;
+  color: #d0d0d0;
+  padding: 4px;
+  width: 100%;
 }
