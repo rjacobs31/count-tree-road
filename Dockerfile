@@ -5,7 +5,7 @@ COPY elm-package.json .
 COPY yarn.lock .
 COPY src/ .
 RUN yarn install
-RUN yarn global add elm elm-package elm-make
+RUN yarn global add elm
 RUN elm-package install -y
 RUN yarn build
 
