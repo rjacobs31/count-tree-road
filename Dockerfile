@@ -3,10 +3,11 @@ WORKDIR /build/
 COPY package.json .
 COPY elm-package.json .
 COPY yarn.lock .
-COPY src/ ./src/
 RUN yarn install
 RUN yarn global add elm
 RUN elm-package install -y
+COPY webpack.config.js .
+COPY src/ ./src/
 RUN yarn build
 
 FROM nginx:alpine as complete
