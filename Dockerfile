@@ -3,7 +3,7 @@ WORKDIR /build/
 COPY package.json .
 COPY elm-package.json .
 COPY yarn.lock .
-COPY src/ .
+COPY src/ ./src/
 RUN yarn install
 RUN yarn global add elm
 RUN elm-package install -y
